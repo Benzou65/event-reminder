@@ -1,11 +1,12 @@
-import type { NextPage } from 'next'
+import type { GetStaticProps, NextPage, NextPageContext } from 'next'
+import axios from 'axios'
 import Head from 'next/head'
 import Image from 'next/image'
 import MilestoneCard from '../components/Card'
 import styles from '../styles/Home.module.css'
 import data from '../data'
 
-const Home: NextPage = () => {
+const Home: NextPage = ({ milestonesFromAirtable }) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -21,18 +22,16 @@ const Home: NextPage = () => {
         </h1>
 
         <div className={styles.grid}>
-          {data.map((project) =>
-            project.milestones.map((milestone) => (
-              <MilestoneCard
-                key={milestone.id}
-                url={project.url}
-                name={milestone.name}
-                projectName={project.name}
-                projectDescription={project.description}
-                date={milestone.date}
-              />
-            ))
-          )}
+          {milestonesFromAirtable.map((milestone: any) => (
+            <MilestoneCard
+              key={milestone.id}
+              url={milestone.project.url}
+              name={milestone.name}
+              projectName={milestone.project.name}
+              projectDescription={milestone.project.description}
+              date={milestone.date}
+            />
+          ))}
         </div>
       </main>
 
@@ -50,6 +49,16 @@ const Home: NextPage = () => {
       </footer>
     </div>
   )
+}
+
+export const getStaticProps: GetStaticProps = async (context) => {
+  // Fetch data from API
+  const res = await axios.get('http://localhost:3000/api/milestone')
+  const milestonesFromAirtable = res.data
+
+  return {
+    props: { milestonesFromAirtable }, // will be passed to the page component as props
+  }
 }
 
 export default Home
