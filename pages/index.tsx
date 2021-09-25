@@ -1,7 +1,7 @@
 import type { NextPage } from 'next'
 import Head from 'next/head'
 import Image from 'next/image'
-import Card from '../components/Card'
+import MilestoneCard from '../components/Card'
 import styles from '../styles/Home.module.css'
 import data from '../data'
 
@@ -21,15 +21,18 @@ const Home: NextPage = () => {
         </h1>
 
         <div className={styles.grid}>
-          {data.map((item) => (
-            <Card
-              key={item.id}
-              link={item.link}
-              title={item.title}
-              description={item.description}
-              date={item.date}
-            />
-          ))}
+          {data.map((project) =>
+            project.milestones.map((milestone) => (
+              <MilestoneCard
+                key={milestone.id}
+                link={project.url}
+                name={milestone.name}
+                projectName={project.name}
+                projectDescription={project.description}
+                date={milestone.date}
+              />
+            ))
+          )}
         </div>
       </main>
 

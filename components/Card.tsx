@@ -7,25 +7,29 @@ require('dayjs/locale/fr')
 dayjs.extend(customParseFormat)
 
 interface Props {
-  link: string
-  title: string
-  description: string
+  url: string
+  name: string
+  projectName: string
+  projectDescription: string
   date: string
 }
 
-export default function Card({
-  link,
-  title,
-  description,
+export default function MilestoneCard({
+  url,
+  name,
+  projectName,
+  projectDescription,
   date,
 }: Props): ReactElement {
   let formatedDate = dayjs(date, 'DD/MM/YYYY HH:mm', 'fr').format(
     'DD MMMM YYYY'
   )
   return (
-    <a href={link} className={styles.card}>
-      <h2>{title} &rarr;</h2>
-      <p>{description}</p>
+    <a href={url} className={styles.card} target="_blank" rel="noreferrer">
+      <h2>
+        {projectName} - {projectDescription}&rarr;
+      </h2>
+      <p>{name}</p>
       <p>{formatedDate}</p>
     </a>
   )
