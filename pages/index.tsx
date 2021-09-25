@@ -25,7 +25,7 @@ const Home: NextPage = () => {
             project.milestones.map((milestone) => (
               <MilestoneCard
                 key={milestone.id}
-                link={project.url}
+                url={project.url}
                 name={milestone.name}
                 projectName={project.name}
                 projectDescription={project.description}
