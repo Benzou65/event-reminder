@@ -12,7 +12,7 @@ const table = base(AIRTABLE_PROJECTS_TABLE_NAME)
 
 export default async function getProjects() {
   const records = await table.select({}).firstPage()
-  console.log(`records`, records)
+
   const projects = records.map((record) => ({
     id: record.id,
     name: record.fields.name,
@@ -22,6 +22,6 @@ export default async function getProjects() {
     endDate: record.fields['end date'],
     milestones: record.fields.Milestones,
   }))
-  console.log(`projects`, projects)
+
   return records
 }
