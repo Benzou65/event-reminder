@@ -1,12 +1,15 @@
-import type { GetStaticProps, NextPage, NextPageContext } from 'next'
+import type { GetStaticProps, NextPage, InferGetStaticPropsType } from 'next'
 import axios from 'axios'
 import Head from 'next/head'
 import Image from 'next/image'
 import MilestoneCard from '../components/Card'
+import getMilestones from '../backend/milestone/milestone.controller'
+import TMilestone from '../backend/milestone/TMilestone'
 import styles from '../styles/Home.module.css'
-import data from '../data'
 
-const Home: NextPage = ({ milestonesFromAirtable }) => {
+const Home: NextPage = ({
+  milestonesFromAirtable,
+}: InferGetStaticPropsType<typeof getStaticProps>) => {
   return (
     <div className={styles.container}>
       <Head>
@@ -22,13 +25,13 @@ const Home: NextPage = ({ milestonesFromAirtable }) => {
         </h1>
 
         <div className={styles.grid}>
-          {milestonesFromAirtable.map((milestone: any) => (
+          {milestonesFromAirtable.map((milestone: TMilestone) => (
             <MilestoneCard
               key={milestone.id}
-              url={milestone.project.url}
+              url={milestone?.project?.url}
               name={milestone.name}
-              projectName={milestone.project.name}
-              projectDescription={milestone.project.description}
+              projectName={milestone?.project?.name}
+              projectDescription={milestone?.project?.description}
               date={milestone.date}
             />
           ))}
@@ -52,9 +55,15 @@ const Home: NextPage = ({ milestonesFromAirtable }) => {
 }
 
 export const getStaticProps: GetStaticProps = async (context) => {
-  // Fetch data from API
-  const res = await axios.get('http://localhost:3000/api/milestone')
-  const milestonesFromAirtable = res.data
+  // Fetch data from Airtable
+  const milestonesFromAirtable = await getMilestones()
+  // Sort by date
+  milestonesFromAirtable.sort((a, b) => {
+    return (
+      new Date(a.date as string).getTime() -
+      new Date(b.date as string).getTime()
+    )
+  })
 
   return {
     props: { milestonesFromAirtable }, // will be passed to the page component as props

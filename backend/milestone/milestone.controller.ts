@@ -12,20 +12,21 @@ const table = base(AIRTABLE_MILESTONES_TABLE_NAME)
 
 export default async function getMilestones() {
   const records = await table.select({}).firstPage()
-  //console.log(`records`, records)
+
   const milestones = records.map((record) => ({
     id: record.id,
-    name: record.fields.name,
-    date: record.fields.date,
-    project: {
-      id: record.fields.project?.[0],
-      name: record.fields['name (from project)']?.[0],
-      description: record.fields?.['description (from project)']?.[0],
-      url: record.fields['url (from project)']?.[0],
-      startDate: record.fields['start date (from project)']?.[0],
-      endDate: record.fields['end date (from project)']?.[0],
-    },
+    name: record.fields.name || null,
+    date: record.fields.date || null,
+    project:
+      {
+        id: record.fields.project,
+        name: record.fields['name (from project)'] || null,
+        description: record.fields?.['description (from project)'] || null,
+        url: record.fields['url (from project)'] || null,
+        startDate: record.fields['start date (from project)'] || null,
+        endDate: record.fields['end date (from project)'] || null,
+      } || null,
   }))
-  console.log(`milestones`, milestones)
+
   return milestones
 }

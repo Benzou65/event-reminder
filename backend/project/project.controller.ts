@@ -5,9 +5,6 @@ const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID
 const AIRTABLE_PROJECTS_TABLE_NAME = process.env
   .AIRTABLE_PROJECTS_TABLE_NAME as string
 
-// const base = new Airtable({ apiKey: AIRTABLE_API_KEY as string }).base(
-//   AIRTABLE_BASE_ID as string
-// )
 const base = new Airtable({ apiKey: AIRTABLE_API_KEY }).base(
   AIRTABLE_BASE_ID as string
 )

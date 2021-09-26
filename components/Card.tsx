@@ -7,11 +7,11 @@ require('dayjs/locale/fr')
 dayjs.extend(customParseFormat)
 
 interface Props {
-  url: string
-  name: string
-  projectName: string
-  projectDescription: string
-  date: string
+  url?: string
+  name?: string
+  projectName?: string
+  projectDescription?: string
+  date?: Date
 }
 
 export default function MilestoneCard({
@@ -21,9 +21,7 @@ export default function MilestoneCard({
   projectDescription,
   date,
 }: Props): ReactElement {
-  let formatedDate = dayjs(date, 'DD/MM/YYYY HH:mm', 'fr').format(
-    'DD MMMM YYYY'
-  )
+  let formatedDate = dayjs(date).locale('fr').format('DD MMMM YYYY')
   return (
     <a href={url} className={styles.card} target="_blank" rel="noreferrer">
       <h2>
